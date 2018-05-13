@@ -130,12 +130,17 @@ STATIC_URL = '/static/'
 
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.twitter.TwitterOAuth',
-    'django.contrib.auth.backends.ModelBackend',
+    'social_core.backends.vk.VKOAuth2',
+    'django.contrib.auth.backends.ModelBackend',  
 )
 
 
 SOCIAL_AUTH_TWITTER_KEY = 'Au65Q7B7jINTftvfiQTKyGPEF'
 SOCIAL_AUTH_TWITTER_SECRET = '3tMqlN3G2krsNuWbGKackZP57MRch8flsDXJuDLIu16yF0gHHm'
+
+SOCIAL_AUTH_VK_OAUTH2_KEY = '6439332'
+SOCIAL_AUTH_VK_OAUTH2_SECRET = 'Pwh5gcskcTBQsrT3PVtZ'
+SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['email',]
 
 
 SOCIAL_AUTH_LOGIN_ERROR_URL = '/settings/'
