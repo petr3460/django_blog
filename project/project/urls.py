@@ -22,6 +22,7 @@ from app import views as core_views
 urlpatterns = [
     path('admin/', admin.site.urls),
 
+    path('accounts/profile/', core_views.settings, name='settings'),
     path('', core_views.home, name='home'),
     path('accounts/login/', auth_views.login, name='login'),
     path('accounts/logout/', auth_views.logout, name='logout'),
