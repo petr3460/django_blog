@@ -125,6 +125,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+    ('static', 
+    '/home/petr/Desktop/try_twitter/project/static/'
+    ),
+)
 
 
 
@@ -146,3 +151,5 @@ SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['email',]
 SOCIAL_AUTH_LOGIN_ERROR_URL = '/settings/'
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/settings/'
 SOCIAL_AUTH_RAISE_EXCEPTIONS = False
+
+
