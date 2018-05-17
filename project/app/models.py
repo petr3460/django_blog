@@ -5,11 +5,11 @@ from django.contrib.auth.models import User
 
 
 
-class Category(models.Model):
+class Tag(models.Model):
     title = models.CharField(max_length=50)
     class Meta:
-        verbose_name = 'категория'
-        verbose_name_plural = 'категории'
+        verbose_name = 'тег'
+        verbose_name_plural = 'теги'
 
     def __str__(self):
         return self.title
@@ -20,9 +20,9 @@ class Article(models.Model):
     text = models.TextField(verbose_name='текст статьи')
     title = models.CharField(max_length=200, verbose_name='название статьи')
     created_date = models.DateTimeField(default=timezone.now)
-    category = models.ForeignKey(Category, verbose_name='категория', on_delete=models.SET_NULL, null=True)
+    tags = models.ManyToManyField(Tag, verbose_name='тег')
     image = models.ImageField(null=True, blank=True, upload_to='static/img/')
-    likes = models.ManyToManyField(User, related_name='likes')
+    likes = models.ManyToManyField(User, related_name='likes', blank=True)
 
     @property
     def total_likes(self):
@@ -59,6 +59,10 @@ class Comment(models.Model):
         verbose_name = 'комментарий'
         verbose_name_plural = 'комментарии'
 
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    avatar = models.ImageField(upload_to='img/avatars/')
 
 
 

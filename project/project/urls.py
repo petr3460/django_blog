@@ -24,13 +24,16 @@ urlpatterns = [
 
     path('accounts/profile/', core_views.settings, name='settings'),
     path('', core_views.home, name='home'),
+    path('articles/<slug:tag>/', core_views.home, name='articles_by_tag'),
+    path('articles/<slug:tag>/<int:page_number>/', core_views.home, name='tag-pagination' ),
+    path('page/<int:page_number>/', core_views.home, name='pagination' ),
     path('article/<slug:article_id>/', core_views.article, name='post'),
     path('accounts/login/', auth_views.login, name='login'),
     path('accounts/logout/', auth_views.logout, name='logout'),
     path('oauth/', include('social_django.urls', namespace='social')),
     path('settings/', core_views.settings, name='settings'),
     path('settings/password/', core_views.password, name='password'),
-
+    
     path('like/', core_views.like, name='like'),
     
 ]

@@ -81,29 +81,16 @@
 
 <!-- Categories Widget -->
             <div class="card my-4">
-                <h5 class="card-header">Categories</h5>
+                <h5 class="card-header">Tags</h5>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-lg-6">                            
                             <ul class="list-unstyled mb-0">
-                                {% for category in categories %}
+                                {% for tag in tags %}
                                 <li>
-                                    <a href="#">{{ category.title }}</a>
+                                    <a href="{% url 'articles_by_tag' tag=tag.title %}">{{ tag.title }}</a>
                                 </li>
                                 {% endfor %}
-                            </ul>
-                        </div>
-                        <div class="col-lg-6">
-                            <ul class="list-unstyled mb-0">
-                                <li>
-                                    <a href="#">JavaScript</a>
-                                </li>
-                                <li>
-                                    <a href="#">CSS</a>
-                                </li>
-                                <li>
-                                    <a href="#">Tutorials</a>
-                                </li>
                             </ul>
                         </div>
                     </div>
@@ -140,22 +127,8 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
-<script>
+{% block javascript %}
+{% endblock %}
 
-$('#like').click(function(){
-    $.ajax({
-                type: "POST",
-                url: "{% url 'like' %}",
-                data: {'id': $(this).attr('name'), 'csrfmiddlewaretoken': '{{ csrf_token }}'},
-                dataType: "json",
-                success: function(response) {
-                        $('#lc').text(response.likes_count);                            
-                },
-                error: function(rs, e) {
-                        alert(rs.responseText);
-                }
-            }); 
-})
-</script>
 </body>
 </html>

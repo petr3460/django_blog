@@ -3,25 +3,30 @@ from django.contrib.auth.forms import AdminPasswordChangeForm, PasswordChangeFor
 from django.contrib.auth import update_session_auth_hash
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Article, Comment, Category
+from .models import Article, Comment, Tag
 import pdb
 from .forms import CommentForm
 from social_django.models import UserSocialAuth
 from django.http import HttpResponse
-try:
-    from django.utils import simplejson as json
-except ImportError:
-    import json
+import json
 from django.views.decorators.http import require_POST
+from django.core.paginator import Paginator
 
 
-def home(request):
+def home(request, page_number=1, tag=''):
+    if tag:
+        tag = get_object_or_404(Tag, title=tag)
+        articles = Article.objects.filter(tags=tag)
+    else:
+        articles = Article.objects.all()
+    current_page = Paginator(articles, 2)
     user = request.user
-    categories = Category.objects.all()
+    tags = Tag.objects.all()
+    #pdb.set_trace()
     content = {
-        'articles': Article.objects.all(),
+        'articles': current_page.get_page(page_number),
         'user': user,
-        'categories': categories,         
+        'tags': tags,         
     }
     return render(request, 'home.html', content)
 
@@ -30,7 +35,7 @@ def article(request, article_id):
     user = request.user
     article = get_object_or_404(Article, id=article_id)
     comments = Comment.objects.filter(article=article)
-    categories = Category.objects.all()
+    tags = Tag.objects.all()
     
     if request.method == 'POST':
         form = CommentForm(request.POST)
@@ -48,7 +53,7 @@ def article(request, article_id):
         'article': article,
         'user': user,
         'comments': comments,
-        'categories': categories,  
+        'tags': tags,  
         'form': form,      
     }
     return render(request, 'article.html', content)
@@ -57,7 +62,7 @@ def article(request, article_id):
 @login_required
 def settings(request):
     user = request.user
-    categories = Category.objects.all()
+    tags = Tag.objects.all()
     try:
         twitter_login = user.social_auth.get(provider='twitter')
     except UserSocialAuth.DoesNotExist:
@@ -67,14 +72,11 @@ def settings(request):
         vk_login = user.social_auth.get(provider='vk-oauth2')
     except UserSocialAuth.DoesNotExist:
         vk_login = None
-
-    can_disconnect = (user.social_auth.count() > 1 or user.has_usable_password())
     #pdb.set_trace()
     return render(request, 'settings.html', {        
         'twitter_login': twitter_login,  
         'vk_login': vk_login,      
-        'can_disconnect': can_disconnect,
-        'categories': categories, 
+        'tags': tags, 
     })
 
 @login_required
