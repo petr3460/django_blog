@@ -11,6 +11,7 @@ from django.http import HttpResponse
 import json
 from django.views.decorators.http import require_POST
 from django.core.paginator import Paginator
+from django.db.models import Q
 
 
 def home(request, page_number=1, tag=''):
@@ -19,6 +20,14 @@ def home(request, page_number=1, tag=''):
         articles = Article.objects.filter(tags=tag)
     else:
         articles = Article.objects.all()
+    query = request.GET.get('q')
+    if query:
+        articles = articles.filter(
+            Q(title__icontains=query)|
+            Q(author__first_name__icontains=query)|
+            Q(author__last_name__icontains=query)|
+            Q(text__icontains=query)
+            ).distinct()
     current_page = Paginator(articles, 2)
     user = request.user
     tags = Tag.objects.all()
