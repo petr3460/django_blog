@@ -1,7 +1,5 @@
-
-import pdb
+#import pdb
 from .models import UserProfile
-
 
 
 def save_profile(backend, user, response, *args, **kwargs):

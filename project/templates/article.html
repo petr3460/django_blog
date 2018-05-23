@@ -20,7 +20,7 @@ article name
         <div class="card-footer text-muted">
             Posted on {{ article.created_date }} by {{ article.author }}
         </div>
-        <div>
+        <div id="comments">
             {% for comment in comments %}
                 <p>{{ comment.author.get_full_name }}: {{ comment.text }}</p>
                 <p>{{ comment.created_date }}</p>
@@ -28,7 +28,7 @@ article name
         </div>
         {% if user.is_authenticated %}
             <div>
-                <form action="" method="POST">
+                <form action="" id="postForm" method="POST" name="{{ article.id }}">
                     {% csrf_token %}
                     {{ form.as_p }}
                     <button type="submit" class="btn btn-primary">Отправить</button>
@@ -73,5 +73,33 @@ article name
                     }
                 }); 
     })
+
+
+
+    $('#postForm').submit(function(e){
+        var msg = $(this).serialize();
+        var id = $(this).attr('name');
+        $.ajax({
+                    type: "POST",
+                    url: "{% url 'advert' %}",
+                    data: msg + "&id=" + id,
+                    id: $(this).attr('name'),
+                    dataType: "json",
+                    success: function(response) {
+                        $('#comments').append('<p>', response.user, ": ", response.comment, '</p>');                            
+                        $('#comments').append('<p>', 'только что', '</p>')
+                    },
+                }); 
+        e.preventDefault();
+    })
+
+/*  $('#postForm').submit(function(e){    
+     alert($(this));
+    
+    $.post("{% url 'advert' %}", $(this).serialize(), function(data){         
+        $('#comments').append('<p>', data.message, '</p>');        
+    });
+    e.preventDefault();
+}); */
 </script>
 {% endblock %}

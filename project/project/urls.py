@@ -16,12 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
+from app import api
 
 from app import views as core_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-
     path('accounts/profile/', core_views.settings, name='settings'),
     path('', core_views.home, name='home'),
     path('articles/<slug:tag>/', core_views.home, name='articles_by_tag'),
@@ -29,16 +29,17 @@ urlpatterns = [
     path('page/<int:page_number>/', core_views.home, name='pagination' ),
     path('article/<slug:article_id>/', core_views.article, name='post'),
     path('accounts/login/', auth_views.login, name='login'),
-    path('accounts/logout/', auth_views.logout, name='logout'),
+    path('accounts/logout/', auth_views.logout, {'next_page': '/'}, name='logout'),
     path('oauth/', include('social_django.urls', namespace='social')),
     path('settings/', core_views.settings, name='settings'),
     path('settings/password/', core_views.password, name='password'),
-    
+    path('api/client/articles/', api.client_get_article, name='api'),
     path('like/', core_views.like, name='like'),
+    path('advert/', core_views.advert, name='advert'),
     
 ]
 
 
-LOGIN_URL = 'login'
+""" LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
-LOGIN_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = 'home' """

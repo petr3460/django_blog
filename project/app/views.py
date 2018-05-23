@@ -82,11 +82,12 @@ def settings(request):
     except UserSocialAuth.DoesNotExist:
         vk_login = None
     #pdb.set_trace()
-    return render(request, 'settings.html', {        
+    content = {
         'twitter_login': twitter_login,  
         'vk_login': vk_login,      
         'tags': tags, 
-    })
+    }
+    return render(request, 'settings.html', content)
 
 @login_required
 def password(request):
@@ -128,3 +129,24 @@ def like(request):
     print(ctx)
     
     return HttpResponse(json.dumps(ctx), content_type='application/json')
+
+
+def advert(request):
+    print('this is advert!!!')
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if(form.is_valid()):
+
+            form = form.save(commit=False)
+            form.author = request.user
+            article_id = request.POST.get('id', None)
+            #pdb.set_trace()
+            form.article = get_object_or_404(Article, id=article_id)            
+            form.save()
+            #pdb.set_trace()            
+            comment = form.text
+            user = form.author.get_full_name()
+            
+
+        return HttpResponse(json.dumps({'comment': comment, 'user': user},), content_type='application/json')
+

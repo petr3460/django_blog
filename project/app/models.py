@@ -3,10 +3,9 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 
 
-
-
 class Tag(models.Model):
     title = models.CharField(max_length=50)
+
     class Meta:
         verbose_name = 'тег'
         verbose_name_plural = 'теги'
@@ -26,10 +25,6 @@ class Article(models.Model):
 
     @property
     def total_likes(self):
-        """
-        Likes for the company
-        :return: Integer: Likes for the company
-        """
         return self.likes.count()
 
     class Meta:
