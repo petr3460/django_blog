@@ -33,10 +33,12 @@ urlpatterns = [
     path('oauth/', include('social_django.urls', namespace='social')),
     path('settings/', core_views.settings, name='settings'),
     path('settings/password/', core_views.password, name='password'),
-    path('api/client/articles/', api.client_get_article, name='api'),
     path('like/', core_views.like, name='like'),
     path('advert/', core_views.advert, name='advert'),
-    
+    #api
+    path('api/client/comments/<slug:article_id>/', api.client_get_comment, name='comm_api'),
+    path('api/client/articles/', api.client_get_article, name='atr_api'),
+
 ]
 
 

@@ -130,7 +130,8 @@ def like(request):
     
     return HttpResponse(json.dumps(ctx), content_type='application/json')
 
-
+@login_required
+@require_POST
 def advert(request):
     print('this is advert!!!')
     if request.method == "POST":
@@ -146,6 +147,7 @@ def advert(request):
             #pdb.set_trace()            
             comment = form.text
             user = form.author.get_full_name()
+           
             
 
         return HttpResponse(json.dumps({'comment': comment, 'user': user},), content_type='application/json')

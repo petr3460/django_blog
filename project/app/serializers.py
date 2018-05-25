@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Article
+from .models import Article, Comment
 import pdb
 
 
@@ -15,5 +15,13 @@ class ArticleSerializer(serializers.ModelSerializer):
         model = Article
         fields = ('author', 'text', 'title', 'created_date', 'tags', 'image', 'likes')
 
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    
+
+    class Meta:
+        model = Comment
+        fields = ('author', 'text', 'created_date', 'article')
 
 
